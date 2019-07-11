@@ -1,0 +1,69 @@
+.kuvapankki-modal {   
+    background-color: white;
+    
+    overflow: none;
+    
+    position: fixed;
+    
+    top: 25px;
+    left: 25px;
+    bottom: 25px;
+    right: 25px;
+    
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+}
+
+.kuvapankki-modal .toolbar {
+    padding: 10px 25px;
+
+    background-color: #DEDEDE;
+
+    display: flex;
+}
+
+.kuvapankki-modal .searchbar {
+    padding: 25px;
+    display: flex;
+}
+
+.kuvapankki-modal .searchbar > * {
+    margin-right: 10px;
+}
+
+.kuvapankki-modal .thumbnails {
+    padding: 0 25px 25px 25px !important;
+    overflow-y: scroll;
+    flex: 1;
+}
+
+.kuvapankki-modal .components-button {
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+
+.kuvapankki-modal input, .kuvapankki-modal select {
+    padding: 10px 10px;
+    height: 100%;
+    vertical-align: top;
+}
+
+.kuvapankki-modal .paginator {
+    padding: 20px 10px;
+    text-align: center;
+}
+
+.kuvapankki-modal .paginator .page {
+    padding: 8px 10px;
+    margin-right: 5px;
+
+    border: 1px solid #DEDEDE;
+
+    cursor: pointer;
+}
+
+.kuvapankki-modal .paginator .page.current {
+    border-color: #0085ba;
+    color: #0085ba;
+}
