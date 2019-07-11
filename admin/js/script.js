@@ -35,14 +35,14 @@
 
     Kuvapankki.page = 1;
     Kuvapankki.totalPages = 1;
-    Kuvapankki.itemsPerPage = 16;
+    Kuvapankki.itemsPerPage = 8;
     
     /** 
      * Create modal elements 
      */
     Kuvapankki.create = function() {
         Kuvapankki.root = jQuery('<div class="kuvapankki-modal"></div>');
-        Kuvapankki.rootImages = jQuery('<select multiple></select>');
+        Kuvapankki.rootImages = jQuery('<select multiple masonry></select>');
 
         Kuvapankki.rootToolbar = jQuery('<div class="toolbar"></div>');
 
@@ -73,7 +73,7 @@
 
         languageSelect.change(function() {
             Kuvapankki.currentLocale = jQuery(this).val();
-            Kuvapankki.search();
+            Kuvapankki.resetSearch();
         });
 
         Kuvapankki.rootToolbar.append(languageSelect);
@@ -224,13 +224,15 @@
                 var option = jQuery('<option></option>');
                 option.attr('data-img-src', file.thumbnail_url);
                 option.val(file.url);
-                option.text(Kuvapankki.getTranslation(file, 'name'));
+                option.text(file.name);
                 option.data('id', file.id);
+                option.data('ext', file.extension);
 
                 Kuvapankki.rootImages.append(option);
             });
         });
 
+        
         Kuvapankki.rootImages.imagepicker({
             hide_select: true,
             show_label: true
@@ -271,7 +273,7 @@
          * Display first page, current page and last page
          * UNLESS current page is first or the last, then 2nd value is current-page +/- 1
          */
-        
+
         var pages = [1];
         
         if (last_page > 1) {
@@ -312,7 +314,7 @@
 
             return {
                 link: image.val(),
-                name: image.text() + '-' + image.data('id')
+                name: image.text() + '-' + image.data('id') + '.' + image.data('ext')
             };
         });
 

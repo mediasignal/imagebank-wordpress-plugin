@@ -32,9 +32,9 @@ function kuvapankki_ajax_search()
     }
 
     // Add thumbnail url to images
-    $data['data'] = array_map(function($product) use ($kapi) {
+    $data['data'] = array_map(function ($product) use ($kapi) {
         // Mapception, eww
-        $product['files'] = array_map(function($file) use ($kapi) {
+        $product['files'] = array_map(function ($file) use ($kapi) {
             $file['url'] = kuvapankki_image_url($file, false);
             $file['thumbnail_url'] = kuvapankki_image_url($file, true);
 
@@ -52,8 +52,9 @@ add_action('wp_ajax_kuvapankki_search', 'kuvapankki_ajax_search');
 function kuvapankki_image_url($item, $thumbnail=false)
 {
     $proxy_url = kuvapankki_media_plugin_url('includes/imageproxy.php');
+    $fd = base64_encode("{$item['id']};{$item['hashedName']};{$item['mime']}");
     $params = [
-        'id' => $item['id'],
+        'fd' => $fd,
         'thumbnail' => $thumbnail
     ];
 
@@ -75,7 +76,7 @@ function kuvapankki_url()
     return kuvapankki_get_option('kuvapankki_url');
 }
 
-function kuvapankki_success($message) 
+function kuvapankki_success($message)
 {
     wp_send_json([
         'success'   => true,
@@ -85,7 +86,7 @@ function kuvapankki_success($message)
     exit;
 }
 
-function kuvapankki_error($message) 
+function kuvapankki_error($message)
 {
     wp_send_json([
         'success'   => false,

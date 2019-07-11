@@ -1,6 +1,7 @@
 <?php
 
-class KuvapankkiAPI {
+class KuvapankkiAPI
+{
     private static $instance;
 
     public $baseUrl;
@@ -16,17 +17,24 @@ class KuvapankkiAPI {
         return static::$instance;
     }
 
-    function __construct()
+    public function __construct()
     {
         // Get Base URL from settings
         $this->baseUrl = kuvapankki_url();
         
         // Authenticate to get API Token
         $data = $this->authenticate(kuvapankki_username(), kuvapankki_password());
-        $this->token = $data['data']['token'];
+        if ($data && isset($data['data']) && isset($data['data']['token'])) {
+            $this->token = $data['data']['token'];
+        }
     }
 
-    function call($url, $params, $method)
+    public function authed()
+    {
+        return $this->token !== null;
+    }
+
+    public function call($url, $params, $method)
     {
         // Set headers
         $headers = [
@@ -70,7 +78,6 @@ class KuvapankkiAPI {
         // Get call contents
         $result = curl_exec($ch);
         curl_close($ch);
-
         
         if ($result === false) {
             throw new Exception(curl_error($ch), curl_errno($ch));
@@ -78,23 +85,23 @@ class KuvapankkiAPI {
         
         try {
             $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-        } catch (Exception $e) { 
+        } catch (Exception $e) {
         }
 
         return $result;
     }
 
-    function get($url, $params=[]) 
+    public function get($url, $params=[])
     {
         return $this->call($url, $params, 'GET');
     }
 
-    function post($url, $params=[]) 
+    public function post($url, $params=[])
     {
         return $this->call($url, $params, 'POST');
     }
 
-    function authenticate($username, $password)
+    public function authenticate($username, $password)
     {
         return $this->post('authenticate', [
             'email' => $username,
@@ -102,8 +109,8 @@ class KuvapankkiAPI {
         ]);
     }
 
-    function search($params=[]) 
-    { 
+    public function search($params=[])
+    {
         $defaults = [
             'categories' => [],
             'direction' => "desc",
@@ -115,8 +122,8 @@ class KuvapankkiAPI {
             'page' => 1,
             'per_page' => 16,
             'products' => [
-                'id' => "", 
-                'name' => "", 
+                'id' => "",
+                'name' => "",
                 'description' => ""
             ],
             'showArchived' => false
@@ -126,37 +133,37 @@ class KuvapankkiAPI {
         return $this->post('search', $params);
     }
 
-    function fields() 
-    { 
+    public function fields()
+    {
         return $this->get('fields');
     }
 
-    function languages() 
+    public function languages()
     {
         return $this->get('languages');
     }
 
-    function categories()
+    public function categories()
     {
         return $this->get('category/list');
     }
 
-    function file($id) 
-    { 
+    public function file($id)
+    {
         return $this->get('file/' . $id);
     }
 
-    function file_thumbnail($id)
+    public function file_thumbnail($id)
     {
         return $this->get('file/' . $id . '/thumbnail');
     }
 
-    function products() 
-    { 
+    public function products()
+    {
         return $this->get('products');
     }
 
-    function user() 
+    public function user()
     {
         return $this->get('user');
     }

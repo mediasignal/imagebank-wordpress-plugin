@@ -119,7 +119,7 @@ class KuvapankkiMediaExternalMediaPlugin extends WP_ExternalPluginBase {
    * {@inheritdoc}
    */
   public function download( $file, $filename ) {
-    $attachment_id = $this->save_remote_file( $file, get_class($this), $filename . '.jpg' );
+    $attachment_id = $this->save_remote_file( $file, get_class($this), $filename );
     if ( ! $attachment = wp_prepare_attachment_for_js( $attachment_id ) ) {
       wp_send_json_error();
     }
