@@ -70,9 +70,13 @@
 
 .kuvapankki-modal .thumbnail {
     width: 250px;
-    height: 250px;
+    height: 275px;
     
     padding: 0 !important;
+}
+
+.kuvapankki-modal .thumbnail p {
+    padding: 2px 5px;
 }
 
 .kuvapankki-modal .thumbnail img {
@@ -80,4 +84,10 @@
     height: 200px;
 
     object-fit: contain;
+}
+
+.kuvapankki-modal .thumbnail.selected {
+    background-color: #FFFFFF !important;
+    border-color: #0085ba !important;
+    color: #0085ba !important;
 }
